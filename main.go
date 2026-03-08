@@ -16,8 +16,7 @@ var rootCmd = &cobra.Command{
 	Short: "A powerful CLI for managing Hevy.",
 	Long: `Hevy is a workout management application.
 
-	This CLI allows reading and modifying workouts and routines from the hevy app for a given user.
-	The user will be inferenced by the HEVY_API_KEY.`,
+	This CLI allows reading and modifying workouts and routines from the hevy app for a given user.`,
 }
 
 func main() {
