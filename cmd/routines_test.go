@@ -147,5 +147,79 @@ func TestGetRoutine(test *testing.T) {
 }
 
 func TestUpdateRoutine(test *testing.T) {
-	// Skip implementing for now
+	test.Run("updates a routine and returns the updated routine", func(test *testing.T) {
+		want := hevyapi.RoutineGet{
+			RoutineBase: hevyapi.RoutineBase{Title: "Updated Push Day"},
+			ID:          "routine-abc",
+		}
+		mock := &mockHevyAPI{
+			UpdateRoutineFn: func(ctx context.Context, id string, req *hevyapi.UpdateRoutineRequest) (*hevyapi.UpdateRoutineResponse, error) {
+				if id != "routine-abc" {
+					test.Errorf("UpdateRoutine called with id %q, want %q", id, "routine-abc")
+				}
+				if req.Routine.Title != "Updated Push Day" {
+					test.Errorf("UpdateRoutine called with title %q, want %q", req.Routine.Title, "Updated Push Day")
+				}
+				return &hevyapi.UpdateRoutineResponse{Routine: want}, nil
+			},
+		}
+
+		body := `{"routine":{"title":"Updated Push Day","notes":"","exercises":[]}}`
+		cmd := RoutinesCmd(mock)
+		output, err := executeCommand(cmd, "update", "--id", "routine-abc", "--body", body)
+		if err != nil {
+			test.Fatalf("unexpected error: %v", err)
+		}
+
+		var got hevyapi.RoutineGet
+		if err := json.Unmarshal([]byte(output), &got); err != nil {
+			test.Fatalf("invalid JSON output: %v", err)
+		}
+		if got.ID != want.ID {
+			test.Errorf("ID = %q, want %q", got.ID, want.ID)
+		}
+		if got.Title != want.Title {
+			test.Errorf("Title = %q, want %q", got.Title, want.Title)
+		}
+	})
+
+	test.Run("returns error on update to non-existent routine id", func(test *testing.T) {
+		mock := &mockHevyAPI{
+			UpdateRoutineFn: func(ctx context.Context, id string, req *hevyapi.UpdateRoutineRequest) (*hevyapi.UpdateRoutineResponse, error) {
+				return nil, fmt.Errorf("Hevy API returned status 404")
+			},
+		}
+
+		body := `{"routine":{"title":"Whatever","notes":"","exercises":[]}}`
+		cmd := RoutinesCmd(mock)
+		_, err := executeCommand(cmd, "update", "--id", "nonexistent", "--body", body)
+		if err == nil {
+			test.Fatal("expected error, got nil")
+		}
+	})
+
+	test.Run("returns error on update with invalid JSON body", func(test *testing.T) {
+		mock := &mockHevyAPI{}
+
+		cmd := RoutinesCmd(mock)
+		_, err := executeCommand(cmd, "update", "--id", "routine-abc", "--body", "not-json")
+		if err == nil {
+			test.Fatal("expected error for invalid JSON, got nil")
+		}
+	})
+
+	test.Run("returns error when update api call fails", func(test *testing.T) {
+		mock := &mockHevyAPI{
+			UpdateRoutineFn: func(ctx context.Context, id string, req *hevyapi.UpdateRoutineRequest) (*hevyapi.UpdateRoutineResponse, error) {
+				return nil, fmt.Errorf("connection refused")
+			},
+		}
+
+		body := `{"routine":{"title":"Push Day","notes":"","exercises":[]}}`
+		cmd := RoutinesCmd(mock)
+		_, err := executeCommand(cmd, "update", "--id", "routine-abc", "--body", body)
+		if err == nil {
+			test.Fatal("expected error, got nil")
+		}
+	})
 }
