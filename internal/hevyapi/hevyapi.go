@@ -8,6 +8,7 @@ import (
 	"hevy_cli/internal/middleware"
 	"io"
 	"net/http"
+	"time"
 )
 
 type HevyAPI interface {
@@ -170,10 +171,10 @@ type Workout struct {
 	Title       string            `json:"title"`
 	RoutineID   string            `json:"routine_id"`
 	Description string            `json:"description"`
-	StartTime   string            `json:"start_time"`
-	EndTime     string            `json:"end_time"`
-	UpdatedAt   string            `json:"updated_at"`
-	CreatedAt   string            `json:"created_at"`
+	StartTime   time.Time         `json:"start_time"`
+	EndTime     time.Time         `json:"end_time"`
+	UpdatedAt   time.Time         `json:"updated_at"`
+	CreatedAt   time.Time         `json:"created_at"`
 	Exercises   []WorkoutExercise `json:"exercises"`
 }
 

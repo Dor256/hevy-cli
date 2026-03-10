@@ -3,8 +3,8 @@ package cmd
 import (
 	"bytes"
 	"context"
-	"hevy_cli/internal/hevyapi"
 	"github.com/spf13/cobra"
+	"hevy_cli/internal/hevyapi"
 )
 
 type mockHevyAPI struct {
