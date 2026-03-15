@@ -1,14 +1,12 @@
 package cmd
 
 import (
-	"embed"
 	"fmt"
 	"github.com/spf13/cobra"
 	"io/fs"
 	"os"
+	"hevy_cli/internal/assets"
 )
-
-var embeddedSkills embed.FS
 
 func SetupCmd() *cobra.Command {
 	cmd := &cobra.Command{
@@ -16,8 +14,7 @@ func SetupCmd() *cobra.Command {
 		Short: "Setup skill and references.",
 		Long:  "Use to set up the SKILL.md and all references for AI agents to use.",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			subFS, err := fs.Sub(embeddedSkills, "skill")
-			// entries, err := embeddedSkills.ReadDir("skill")
+			subFS, err := fs.Sub(assets.Skill, "skill")
 			if err != nil {
 				return err
 			}
