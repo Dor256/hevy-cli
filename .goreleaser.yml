@@ -22,7 +22,7 @@ changelog:
       - "^docs:"
       - "^test:"
 
-casks:
+brews:
   - name: hevy
 
     repository:
