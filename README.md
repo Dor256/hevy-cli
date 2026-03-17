@@ -1,6 +1,7 @@
 # Hevy CLI
 
 [![CI](https://github.com/Dor256/hevy-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/Dor256/hevy-cli/actions/workflows/ci.yml)
+![GitHub Release](https://img.shields.io/github/v/release/Dor256/hevy-cli?color=%236442c2)
 
 A command-line interface for [Hevy](https://www.hevyapp.com/), the workout tracking app. Manage your workouts and routines directly from your terminal.
 
