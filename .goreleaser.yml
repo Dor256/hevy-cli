@@ -23,17 +23,13 @@ changelog:
       - "^test:"
 
 homebrew_casks:
-  -
-    name: hevy
+  - name: hevy
 
-    alternative_names:
-      - hevy@{{ .Version }}
-      - hevy@{{ .Major }}
+    repository:
+      owner: Dor256
+      name: homebrew-tap
 
     binaries:
       - hevy
 
     description: "CLI to manage workouts on Hevy. Includes a skill for ai agents to manage workouts for you."
-
-    install: |
-      bin.install hevy
