@@ -24,7 +24,12 @@ func SetupCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
-			return os.CopyFS(skillPath, subFS)
+			err = os.CopyFS(skillPath, subFS)
+			if err != nil {
+				return err
+			}
+			fmt.Printf("Successfuly set up agent skill in %s\n", skillPath)
+			return nil
 		},
 	}
 
