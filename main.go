@@ -34,6 +34,7 @@ func main() {
 		cmd.LoginCmd(),
 		cmd.WorkoutsCmd(hevyClient),
 		cmd.RoutinesCmd(hevyClient),
+		cmd.SetupCmd(),
 	)
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
