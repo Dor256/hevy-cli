@@ -23,5 +23,4 @@ Make sure the user acknowledges that you have the correct information and if you
 After receiving acknoweldgement perform the task at hand such as modifying routines by weight, reps, sets, whatever is necessary.
 
 ## Additional Resources
-Refer to your `scripts` for the `hevy` cli to manage user workouts and routines.
-
+Make sure the `hevy` CLI is installed by running `which hevy`.
