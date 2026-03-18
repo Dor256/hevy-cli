@@ -9,8 +9,14 @@ A command-line interface for [Hevy](https://www.hevyapp.com/), the workout track
 
 ## Installation
 
+### Homebrew
 ```sh
 brew install Dor256/tap/hevy
+```
+
+### Curl
+```sh
+curl -fsSL https://raw.githubusercontent.com/Dor256/hevy-cli/master/install | bash
 ```
 
 ## What it does
