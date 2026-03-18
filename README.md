@@ -5,7 +5,8 @@
   <img alt="GitHub Release" src="https://img.shields.io/github/v/release/Dor256/hevy-cli?color=%236f32a8">
 </a>
 
-A command-line interface for [Hevy](https://www.hevyapp.com/), the workout tracking app. Manage your workouts and routines directly from your terminal.
+A command-line interface for [Hevy](https://www.hevyapp.com/), the workout tracking app.
+Manage your workouts and routines directly from your terminal.
 
 ## Installation
 
@@ -23,12 +24,13 @@ curl -fsSL https://raw.githubusercontent.com/Dor256/hevy-cli/master/install | ba
 
 - **Setup** - Set up the agent skill in the skills directory
 - **Login** - Set your Hevy API key for the CLI to use
-- **View workouts** - list your completed workouts
-- **Manage routines** - list, view, and update your workout routines
+- **View workouts** - List your completed workouts
+- **Manage routines** - List, view, and update your workout routines
 
 ## Agent Skill
 
-This project includes a Claude Code agent skill, allowing Claude to interact with your Hevy account conversationally - querying your workouts, browsing routines, and making updates on your behalf through natural language.
+This project includes a Claude Code agent skill, allowing Claude to interact with your Hevy account conversationally - querying your workouts,
+browsing routines, and making updates on your behalf through natural language.
 
 ---
 
