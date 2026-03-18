@@ -4,7 +4,8 @@ set -e
 
 INSTALL_DIR="$HOME/.hevy/bin"
 TEMP_DIR=$(mktemp -d)
-PROJECT_NAME="hevy"
+PROJECT_NAME="hevy-cli"
+BINARY_NAME="hevy"
 
 detect_platform() {
     local raw_os=$(uname -s)
@@ -15,10 +16,10 @@ detect_platform() {
         *) OS=$(echo "$raw_os" | tr '[:upper:]' '[:lower:]') ;;
     esac
 
-    local arch=$(uname -m)
-    case "$arch" in
-        aarch64|arm64) arch="arm64" ;;
-        x86_64|x64) arch="x64" ;;
+    local raw_arch=$(uname -m)
+    case "$raw_arch" in
+        aarch64|arm64) ARCH="arm64" ;;
+        x86_64|x64) ARCH="x64" ;;
     esac
 
     EXT="tar.gz"
@@ -48,7 +49,7 @@ install_binary() {
     fi
 
     # Ensure binary is executable (excluding Windows)
-    [[ "$OS" != "windows" ]] && chmod +x "$INSTALL_DIR/$PROJECT_NAME"
+    [[ "$OS" != "windows" ]] && chmod +x "$INSTALL_DIR/$BINARY_NAME"
 }
 
 update_path() {
@@ -59,12 +60,12 @@ update_path() {
         *)      shell_profile="$HOME/.profile" ;;
     esac
 
-    if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
+    if ! grep -qs "$INSTALL_DIR" "$shell_profile"; then
         echo "Adding $INSTALL_DIR to PATH in $shell_profile"
         echo -e "\n# Hevy CLI\nexport PATH=\"\$PATH:$INSTALL_DIR\"" >> "$shell_profile"
-        echo "Success! Run 'source $shell_profile' to start using '$PROJECT_NAME'."
+        echo "Success! Run 'source $shell_profile' to start using '$BINARY_NAME'."
     else
-        echo "Success! '$PROJECT_NAME' is ready to use."
+        echo "Success! '$BINARY_NAME' is ready to use."
     fi
 }
 
