@@ -9,6 +9,8 @@ builds:
     goarch:
       - amd64
       - arm64
+    ldflags:
+      - -s -w -X main.version={{ .Version }}
 
 archives:
   - name_template: >-

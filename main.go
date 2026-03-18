@@ -11,12 +11,15 @@ import (
 	"os/signal"
 )
 
+var version = "dev"
+
 var rootCmd = &cobra.Command{
 	Use:   "hevy",
 	Short: "A powerful CLI for managing Hevy.",
 	Long: `Hevy is a workout management application.
 
 	This CLI allows reading and modifying workouts and routines from the hevy app for a given user.`,
+	Version: version,
 }
 
 func main() {
