@@ -20,7 +20,7 @@ func SetupCmd() *cobra.Command {
 			}
 			home, _ := os.UserHomeDir()
 			skillPath := fmt.Sprintf("%s/.claude/skills/workout-coach", home)
-			err = os.MkdirAll(skillPath, 0755)
+			err = os.RemoveAll(skillPath)
 			if err != nil {
 				return err
 			}
