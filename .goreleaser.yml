@@ -11,7 +11,12 @@ builds:
       - arm64
 
 archives:
-  - format_overrides:
+  - name_template: >-
+    {{ .ProjectName }}-
+    {{ .Os }}-
+    {{ if eq .Arch "amd64" }}x64
+    {{ else }}{{ .Arch }}{{ end }}
+    format_overrides:
       - goos: windows
         formats: zip
 

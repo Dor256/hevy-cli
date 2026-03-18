@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+
+set -e
+
+INSTALL_DIR="$HOME/.hevy/bin"
+TEMP_DIR=$(mktemp -d)
+PROJECT_NAME="hevy"
+
+detect_platform() {
+    local raw_os=$(uname -s)
+    case "$raw_os" in
+        Darwin*) OS="darwin" ;;
+        Linux*)  OS="linux" ;;
+        MINGW*|MSYS*|CYGWIN*) OS="windows" ;;
+        *) OS=$(echo "$raw_os" | tr '[:upper:]' '[:lower:]') ;;
+    esac
+
+    local arch=$(uname -m)
+    case "$arch" in
+        aarch64|arm64) arch="arm64" ;;
+        x86_64|x64) arch="x64" ;;
+    esac
+
+    EXT="tar.gz"
+    [[ "$OS" == "windows" ]] && EXT="zip"
+
+    FILENAME="${PROJECT_NAME}-${OS}-${ARCH}.${EXT}"
+    URL="https://github.com/Dor256/hevy-cli/releases/latest/download/${FILENAME}"
+}
+
+download_asset() {
+    echo "Downloading $FILENAME..."
+    if ! curl -sL "$URL" -o "$TEMP_DIR/$FILENAME"; then
+        echo "Error: Failed to download from $URL"
+        cleanup
+        exit 1
+    fi
+}
+
+install_binary() {
+    echo "Installing to $INSTALL_DIR..."
+    mkdir -p "$INSTALL_DIR"
+
+    if [[ "$EXT" == "zip" ]]; then
+        unzip -oq "$TEMP_DIR/$FILENAME" -d "$INSTALL_DIR"
+    else
+        tar -xzf "$TEMP_DIR/$FILENAME" -C "$INSTALL_DIR"
+    fi
+
+    # Ensure binary is executable (excluding Windows)
+    [[ "$OS" != "windows" ]] && chmod +x "$INSTALL_DIR/$PROJECT_NAME"
+}
+
+update_path() {
+    local shell_profile
+    case "$SHELL" in
+        */zsh)  shell_profile="$HOME/.zshrc" ;;
+        */bash) shell_profile="$HOME/.bashrc" ;;
+        *)      shell_profile="$HOME/.profile" ;;
+    esac
+
+    if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
+        echo "Adding $INSTALL_DIR to PATH in $shell_profile"
+        echo -e "\n# Hevy CLI\nexport PATH=\"\$PATH:$INSTALL_DIR\"" >> "$shell_profile"
+        echo "Success! Run 'source $shell_profile' to start using '$PROJECT_NAME'."
+    else
+        echo "Success! '$PROJECT_NAME' is ready to use."
+    fi
+}
+
+cleanup() {
+    if [[ -d "$TEMP_DIR" ]]; then
+        echo "Cleaning up..."
+        rm -rf "$TEMP_DIR"
+    fi
+}
+
+main() {
+    detect_platform
+    download_asset
+    install_binary
+    cleanup
+    update_path
+}
+
+main
+
